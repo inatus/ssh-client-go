@@ -80,7 +80,7 @@ func main() {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		str, _ := reader.ReadString('\n')
-		fmt.Fprint(in, str+"\n\x00")
+		fmt.Fprint(in, str+"\x00")
 	}
 
 }
