@@ -16,7 +16,7 @@ func (p password) Password(user string) (password string, err error) {
 }
 
 func main() {
-	fmt.Print("Server? (Default=localhost): ")
+	fmt.Print("Remote host? (Default=localhost): ")
 	server := scanConfig()
 	if server == "" {
 		server = "localhost"
@@ -57,6 +57,7 @@ func main() {
 
 	// Set IO
 	session.Stdout = os.Stdout
+	session.Stderr = os.Stderr
 	in, _ := session.StdinPipe()
 
 	// Set up terminal modes
@@ -80,7 +81,7 @@ func main() {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		str, _ := reader.ReadString('\n')
-		fmt.Fprint(in, str+"\x00")
+		fmt.Fprint(in, str)
 	}
 
 }
