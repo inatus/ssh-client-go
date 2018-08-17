@@ -2,18 +2,13 @@ package main
 
 import (
 	"bufio"
-	"code.google.com/p/go.crypto/ssh"
+	"golang.org/x/crypto/ssh"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
-type password string
-
-func (p password) Password(user string) (password string, err error) {
-	return string(p), nil
-}
 
 func main() {
 	fmt.Print("Remote host? (Default=localhost): ")
@@ -30,16 +25,17 @@ func main() {
 	fmt.Print("UserName?: ")
 	user := scanConfig()
 	fmt.Print("Password?: ")
-	p := scanConfig()
+	pass := scanConfig()
 
-	var pass = password(p)
+	
 	config := &ssh.ClientConfig{
 		User: user,
-		Auth: []ssh.ClientAuth{
+		Auth: []ssh.AuthMethod{
 			// ClientAuthPassword wraps a ClientPassword implementation
 			// in a type that implements ClientAuth.
-			ssh.ClientAuthPassword(pass),
+			ssh.Password(pass),
 		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 	conn, err := ssh.Dial("tcp", server, config)
 	if err != nil {
