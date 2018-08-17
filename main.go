@@ -37,10 +37,8 @@ func main() {
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
-	conn, err := ssh.Dial("tcp", server, config)
-	if err != nil {
-		panic("Failed to dial: " + err.Error())
-	}
+	conn, _ := ssh.Dial("tcp", server, config)
+	
 	defer conn.Close()
 
 	// Each ClientConn can support multiple interactive sessions,
